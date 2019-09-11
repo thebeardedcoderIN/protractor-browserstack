@@ -9,7 +9,14 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
+variables:
+  browserstackUser: $(BROWSERSTACK_USERNAME)
+  browserstackKey: $(BROWSERSTACK_ACCESS_KEY)
+
 steps:
+- task: BrowserStackConfig@0
+  inputs:
+    BrowserStackServiceEndPoint: 'Bstack'
 - task: NodeTool@0
   inputs:
     versionSpec: '10.x'
@@ -17,5 +24,5 @@ steps:
 
 - script: |
     npm install
-    npm run build
-  displayName: 'npm install and build'
+    npm run parallel
+- task: BrowserStackResults@0
